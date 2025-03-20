@@ -278,154 +278,357 @@
     <script>
 
         class Book {
-            constructor(id, title, author, isbn, isAvailable) {
+            constructor(id, title, author, isbn, isAvailable, genre = '', publishDate = '', description = '') {
                 this.id = id;
                 this.title = title;
                 this.author = author;
                 this.isbn = isbn;
                 this.isAvailable = isAvailable;
+                this.genre = genre;
+                this.publishDate = publishDate;
+                this.description = description;
+                this.dateAdded = new Date().toISOString();
+                this.borrowHistory = [];
             }
         }
-
 
         class UI {
             static displayBooks() {
                 const books = Store.getBooks();
+                const tableBody = document.querySelector('#booksTableBody');
+                tableBody.innerHTML = '';
                 books.forEach(book => UI.addBookToList(book));
+                this.updateStats();
             }
 
             static addBookToList(book) {
                 const list = document.querySelector('#booksTableBody');
                 const row = document.createElement('tr');
+                row.dataset.bookId = book.id;
                 
                 row.innerHTML = `
-                    <td>${book.title}</td>
+                    <td>
+                        <div class="book-title">${book.title}</div>
+                        ${book.description ? `<div class="book-description text-muted">${book.description.substring(0, 50)}...</div>` : ''}
+                    </td>
                     <td>${book.author}</td>
                     <td>${book.isbn}</td>
                     <td>
-                        <span class="status ${book.isAvailable ? 'status-available' : 'status-unavailable'}">
+                        <span class="status ${book.isAvailable ? 'status-available' : 'status-unavailable'}"
+                              onclick="UI.toggleAvailability('${book.id}')">
                             ${book.isAvailable ? 'Available' : 'Not Available'}
                         </span>
                     </td>
                     <td class="action-buttons">
-                        <button class="btn btn-edit edit-btn" data-id="${book.id}">
+                        <button class="btn btn-edit edit-btn" onclick="UI.editBook('${book.id}')">
                             <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button class="btn btn-delete delete-btn" data-id="${book.id}">
+                        <button class="btn btn-delete delete-btn" onclick="UI.deleteBookWithConfirmation('${book.id}')">
                             <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <button class="btn btn-info" onclick="UI.showBookDetails('${book.id}')">
+                            <i class="fas fa-info-circle"></i>
                         </button>
                     </td>
                 `;
 
                 list.appendChild(row);
+                this.addRowAnimation(row);
             }
 
-            static deleteBook(el) {
-                if(el.classList.contains('delete-btn')) {
-                    el.parentElement.parentElement.remove();
+            static addRowAnimation(row) {
+                row.style.opacity = '0';
+                row.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    row.style.transition = 'all 0.3s ease';
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateY(0)';
+                }, 50);
+            }
+
+            static showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    ${message}
+                `;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.classList.add('show');
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 3000);
+                }, 100);
+            }
+
+            static async deleteBookWithConfirmation(id) {
+                if (await this.showConfirmDialog('Are you sure you want to delete this book?')) {
+                    Store.removeBook(id);
+                    const row = document.querySelector(`tr[data-book-id="${id}"]`);
+                    if (row) {
+                        row.style.transform = 'translateX(100px)';
+                        row.style.opacity = '0';
+                        setTimeout(() => {
+                            row.remove();
+                            this.updateStats();
+                            this.showNotification('Book deleted successfully');
+                        }, 300);
+                    }
                 }
             }
 
-            static clearFields() {
-                document.querySelector('#title').value = '';
-                document.querySelector('#author').value = '';
-                document.querySelector('#isbn').value = '';
-                document.querySelector('#availability').checked = true;
-                document.querySelector('#editId').value = '';
-                document.querySelector('#submitBtn').textContent = 'Add Book';
+            static showConfirmDialog(message) {
+                return new Promise((resolve) => {
+                    const dialog = document.createElement('div');
+                    dialog.className = 'confirm-dialog';
+                    dialog.innerHTML = `
+                        <div class="confirm-content">
+                            <p>${message}</p>
+                            <div class="confirm-buttons">
+                                <button class="btn btn-secondary">Cancel</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(dialog);
+
+                    const cancelBtn = dialog.querySelector('.btn-secondary');
+                    const confirmBtn = dialog.querySelector('.btn-danger');
+
+                    cancelBtn.onclick = () => {
+                        dialog.remove();
+                        resolve(false);
+                    };
+
+                    confirmBtn.onclick = () => {
+                        dialog.remove();
+                        resolve(true);
+                    };
+                });
             }
 
-            static fillForm(book) {
+            static toggleAvailability(id) {
+                const book = Store.getBookById(id);
+                if (book) {
+                    book.isAvailable = !book.isAvailable;
+                    Store.updateBook(book);
+                    this.displayBooks();
+                    this.showNotification(`Book marked as ${book.isAvailable ? 'available' : 'unavailable'}`);
+                }
+            }
+
+            static updateStats() {
+                const books = Store.getBooks();
+                const stats = {
+                    total: books.length,
+                    available: books.filter(b => b.isAvailable).length,
+                    borrowed: books.filter(b => !b.isAvailable).length
+                };
+
+                const statsHtml = `
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <i class="fas fa-books"></i>
+                            <h3>Total Books</h3>
+                            <p>${stats.total}</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-book-open"></i>
+                            <h3>Available</h3>
+                            <p>${stats.available}</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-book-reader"></i>
+                            <h3>Borrowed</h3>
+                            <p>${stats.borrowed}</p>
+                        </div>
+                    </div>
+                `;
+
+                let statsSection = document.querySelector('.stats-section');
+                if (!statsSection) {
+                    statsSection = document.createElement('div');
+                    statsSection.className = 'stats-section';
+                    const header = document.querySelector('.header');
+                    header.parentNode.insertBefore(statsSection, header.nextSibling);
+                }
+                statsSection.innerHTML = statsHtml;
+            }
+
+            static clearFields() {
+                document.querySelector('#bookForm').reset();
+                document.querySelector('#editId').value = '';
+                document.querySelector('#submitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Book';
+            }
+
+            static editBook(id) {
+                const book = Store.getBookById(id);
+                if (book) {
+                    document.querySelector('#editId').value = book.id;
                 document.querySelector('#title').value = book.title;
                 document.querySelector('#author').value = book.author;
                 document.querySelector('#isbn').value = book.isbn;
                 document.querySelector('#availability').checked = book.isAvailable;
-                document.querySelector('#editId').value = book.id;
-                document.querySelector('#submitBtn').textContent = 'Update Book';
+                    document.querySelector('#submitBtn').innerHTML = '<i class="fas fa-save"></i> Update Book';
+                    document.querySelector('#title').focus();
+                }
             }
         }
 
         class Store {
             static getBooks() {
-                let books;
-                if(localStorage.getItem('books') === null) {
-                    books = [];
-                } else {
-                    books = JSON.parse(localStorage.getItem('books'));
-                }
-                return books;
+                return JSON.parse(localStorage.getItem('books') || '[]');
+            }
+
+            static getBookById(id) {
+                return this.getBooks().find(book => book.id === id);
             }
 
             static addBook(book) {
-                const books = Store.getBooks();
+                const books = this.getBooks();
                 books.push(book);
                 localStorage.setItem('books', JSON.stringify(books));
             }
 
             static removeBook(id) {
-                const books = Store.getBooks();
-                books.forEach((book, index) => {
-                    if(book.id === id) {
-                        books.splice(index, 1);
-                    }
-                });
+                const books = this.getBooks().filter(book => book.id !== id);
                 localStorage.setItem('books', JSON.stringify(books));
             }
 
             static updateBook(updatedBook) {
-                const books = Store.getBooks();
+                const books = this.getBooks();
                 const index = books.findIndex(book => book.id === updatedBook.id);
-                if(index !== -1) {
+                if (index !== -1) {
                     books[index] = updatedBook;
                     localStorage.setItem('books', JSON.stringify(books));
                 }
             }
         }
 
-        document.addEventListener('DOMContentLoaded', UI.displayBooks);
+        // Add necessary styles
+        const styles = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                transform: translateX(120%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
 
+            .notification.show {
+                transform: translateX(0);
+            }
+
+            .stats-section {
+                margin: 2rem 0;
+            }
+
+            .stats-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .stat-card {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .stat-card i {
+                font-size: 2rem;
+                color: #A27B5C;
+                margin-bottom: 10px;
+            }
+
+            .confirm-dialog {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .confirm-content {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+            }
+
+            .confirm-buttons {
+                margin-top: 20px;
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .text-muted {
+                color: #6c757d;
+                font-size: 0.875rem;
+            }
+
+            tr {
+                transition: all 0.3s ease;
+            }
+        `;
+
+        // Add styles to document
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = styles;
+        document.head.appendChild(styleSheet);
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            UI.displayBooks();
+
+            // Form submission handler
         document.querySelector('#bookForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const title = document.querySelector('#title').value;
-            const author = document.querySelector('#author').value;
-            const isbn = document.querySelector('#isbn').value;
+                const title = document.querySelector('#title').value.trim();
+                const author = document.querySelector('#author').value.trim();
+                const isbn = document.querySelector('#isbn').value.trim();
             const isAvailable = document.querySelector('#availability').checked;
             const editId = document.querySelector('#editId').value;
 
-            if(title === '' || author === '' || isbn === '') {
-                alert('Please fill in all fields');
+                if (!title || !author || !isbn) {
+                    UI.showNotification('Please fill in all fields', 'error');
                 return;
             }
 
-            if(editId) {
+                if (editId) {
                 const updatedBook = new Book(editId, title, author, isbn, isAvailable);
                 Store.updateBook(updatedBook);
-                document.querySelector('#booksTableBody').innerHTML = '';
-                UI.displayBooks();
+                    UI.showNotification('Book updated successfully');
             } else {
-                const book = new Book(Date.now().toString(), title, author, isbn, isAvailable);
-                UI.addBookToList(book);
-                Store.addBook(book);
+                    const newBook = new Book(Date.now().toString(), title, author, isbn, isAvailable);
+                    Store.addBook(newBook);
+                    UI.showNotification('Book added successfully');
             }
 
             UI.clearFields();
+                UI.displayBooks();
+            });
         });
-        document.querySelector('#booksTableBody').addEventListener('click', (e) => {
-            if(e.target.classList.contains('delete-btn')) {
-                UI.deleteBook(e.target);
-                Store.removeBook(e.target.getAttribute('data-id'));
-            }
-
-            if(e.target.classList.contains('edit-btn')) {
-                const books = Store.getBooks();
-                const book = books.find(b => b.id === e.target.getAttribute('data-id'));
-                if(book) {
-                    UI.fillForm(book);
-                }
-            }
-        });
-        
     </script>
 
 </body>

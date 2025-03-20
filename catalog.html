@@ -233,15 +233,22 @@
         <section class="search-section">
             <div class="search-container">
                 <input type="text" class="search-input" placeholder="Search by title, author, or ISBN...">
-                <select class="filter-select">
+                <select class="filter-select" id="genre-filter">
                     <option value="">All Categories</option>
-                    <option value="fiction">Fiction</option>
-                    <option value="non-fiction">Non-Fiction</option>
-                    <option value="science">Science</option>
-                    <option value="history">History</option>
+                    <option value="Classic Literature">Classic Literature</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Science">Science</option>
+                    <option value="Philosophy">Philosophy</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Biography">Biography</option>
+                    <option value="History">History</option>
                 </select>
-                <select class="filter-select">
-                    <option value="">Availability</option>
+                <select class="filter-select" id="status-filter">
+                    <option value="">All Status</option>
                     <option value="available">Available</option>
                     <option value="borrowed">Borrowed</option>
                 </select>
@@ -256,7 +263,7 @@
                 <div class="book-info">
                     <h3 class="book-title">The Great Gatsby</h3>
                     <p class="book-details"><i class="fas fa-user"></i> F. Scott Fitzgerald</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Fiction</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Classic Literature</p>
                     <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0743273565</p>
                     <span class="book-status status-available">Available</span>
                 </div>
@@ -267,15 +274,143 @@
                     <i class="fas fa-book"></i>
                 </div>
                 <div class="book-info">
-                    <h3 class="book-title">1984</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> George Orwell</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Fiction</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0451524935</p>
+                    <h3 class="book-title">Dune</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Frank Herbert</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Science Fiction</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0441172719</p>
                     <span class="book-status status-borrowed">Borrowed</span>
                 </div>
             </div>
 
-            <!-- Add more book cards as needed -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">To Kill a Mockingbird</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Harper Lee</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Classic Literature</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0446310789</p>
+                    <span class="book-status status-available">Available</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">The Alchemist</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Paulo Coelho</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Philosophy</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0062315007</p>
+                    <span class="book-status status-available">Available</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">The Silent Patient</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Alex Michaelides</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Thriller</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-1250301697</p>
+                    <span class="book-status status-borrowed">Borrowed</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">Sapiens</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Yuval Noah Harari</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> History</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0062316097</p>
+                    <span class="book-status status-available">Available</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">The Name of the Wind</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Patrick Rothfuss</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Fantasy</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0756404741</p>
+                    <span class="book-status status-borrowed">Borrowed</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">Atomic Habits</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> James Clear</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Self-Help</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0735211292</p>
+                    <span class="book-status status-available">Available</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">The Thursday Murder Club</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Richard Osman</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Mystery</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-1984880963</p>
+                    <span class="book-status status-available">Available</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">Project Hail Mary</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Andy Weir</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Science Fiction</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0593135204</p>
+                    <span class="book-status status-borrowed">Borrowed</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">The Psychology of Money</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Morgan Housel</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Finance</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0857197689</p>
+                    <span class="book-status status-available">Available</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="book-cover">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">The Midnight Library</h3>
+                    <p class="book-details"><i class="fas fa-user"></i> Matt Haig</p>
+                    <p class="book-details"><i class="fas fa-bookmark"></i> Contemporary Fiction</p>
+                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0525559474</p>
+                    <span class="book-status status-available">Available</span>
+                </div>
+            </div>
         </section>
 
         <div class="pagination">
@@ -283,8 +418,15 @@
             <button class="page-btn">2</button>
             <button class="page-btn">3</button>
             <button class="page-btn">4</button>
-            <button class="page-btn">5</button>
+            <button class="page-btn">...</button>
+            <button class="page-btn">10</button>
         </div>
     </main>
+
+    <div class="loading-spinner" style="display: none;">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    
+    <script src="catalog.js"></script>
 </body>
 </html>
