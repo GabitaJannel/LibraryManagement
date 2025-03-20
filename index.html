@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open Library Collection</title>
+    <link rel="icon" type="image/x-icon" href="/images/Screenshot 2025-03-20 134247.png">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2C3639;
+            --primary-color: #2a5298;
             --accent-color: #A27B5C;
-            --text-color: #3F4E4F;
+            --text-color: black;
             --bg-color: #DCD7C9;
             --white: #F9F5EB;
         }
@@ -32,7 +33,7 @@
         }
 
         .library-header {
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             color: var(--white);
             padding: 2rem 0;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -168,7 +169,7 @@
         }
 
         .library-footer {
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             color: var(--white);
             padding: 2rem 0;
             margin-top: 4rem;
@@ -186,7 +187,10 @@
         .footer-section h4 {
             font-family: 'Playfair Display', serif;
             margin-bottom: 1rem;
-            color: var(--accent-color);
+            font-weight: 900;
+            font-size: 2rem;
+            text-shadow: black 2px 3px 1px;
+            color: rgb(255, 255, 255);
         }
 
         .footer-section ul {
@@ -228,13 +232,14 @@
     <header class="library-header">
         <div class="header-content">
             <h1 class="library-title">
-                <i class="fas fa-book-open"></i> Open Library
+                <i class="fa-solid fa-book-bookmark"></i> Open Library
             </h1>
             <nav class="library-nav">
                 <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Catalog</a>
-                <a href="#" class="nav-link">About</a>
-                <a href="#" class="nav-link">Contact</a>
+                <a href="catalog.html" class="nav-link">Catalog</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="#contacts" class="nav-link">About</a>
+                <a href="#contacts" class="nav-link">Contact</a>
             </nav>
         </div>
     </header>
@@ -245,7 +250,6 @@
         <section class="book-shelf">
             <h2 class="shelf-title">Featured Books</h2>
             <div class="book-grid">
-
                 <div class="book-card">
                     <div class="book-cover">
                         <i class="fas fa-book"></i>
@@ -261,11 +265,11 @@
         </section>
     </main>
 
-    <footer class="library-footer">
+    <footer id="contacts" class="library-footer">
         <div class="footer-content">
             <div class="footer-section">
                 <h4>About Us</h4>
-                <p>Your local open library, bringing knowledge to the community since 2025.</p>
+                <p>Your local open library, bringing knowledge to the community since 2024.</p>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
@@ -279,9 +283,9 @@
             <div class="footer-section">
                 <h4>Contact</h4>
                 <ul>
-                    <li><i class="fas fa-phone"></i> (999) 456-7890</li>
-                    <li><i class="fas fa-envelope"></i> OpenLibrary@library.com</li>
-                    <li><i class="fas fa-map-marker-alt"></i> 999 Library Street</li>
+                    <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+                    <li><i class="fas fa-envelope"></i> info@library.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Library Street</li>
                 </ul>
             </div>
         </div>

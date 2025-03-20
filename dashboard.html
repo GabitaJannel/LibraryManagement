@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System</title>
-    <link rel="icon" type="image/x-icon" href="/images/Screenshot 2025-03-20 103602.png">
+    <link rel="icon" type="image/x-icon" href="/images/Screenshot 2025-03-20 134247.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,7 +28,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: #A27B5C;
             color: white;
             padding: 2rem;
             border-radius: 10px;
@@ -42,7 +42,7 @@
         }
 
         .header p {
-            opacity: 0.9;
+            color: white;
         }
 
         .card {
@@ -147,13 +147,13 @@
         }
 
         .status-available {
-            background: #e3f9e5;
-            color: #1b4332;
+            background: #139c1f;
+            color: black;
         }
 
         .status-unavailable {
-            background: #ffe3e3;
-            color: #c92a2a;
+            background: #ce1d1d;
+            color: #ffffff;
         }
 
         .action-buttons {
@@ -197,12 +197,34 @@
                 padding: 0.75rem;
             }
         }
+
+        .back-btn {
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .back-btn:hover {
+            background-color: white;
+            border: black solid 2px;
+            cursor: pointer;
+            color:#2c3e50;
+            font-weight: 900;
+        }
+    
+       
     </style>
 </head>
 <body>
     <div class="container">
+        <input type="button" value="Back to Home" onclick="window.location.href='index.html'" class="back-btn">
         <div class="header">
-            <h1><i class="fas fa-book-reader"></i> Library Management System</h1>
+            <h1><i class="fa-solid fa-book-bookmark"></i> Library Management System</h1>
             <p>Manage your library collection efficiently</p>
         </div>
 
@@ -254,7 +276,7 @@
     </div>
 
     <script>
-        // Book Class
+
         class Book {
             constructor(id, title, author, isbn, isAvailable) {
                 this.id = id;
@@ -265,7 +287,7 @@
             }
         }
 
-        // UI Class
+
         class UI {
             static displayBooks() {
                 const books = Store.getBooks();
@@ -323,7 +345,6 @@
             }
         }
 
-        // Store Class
         class Store {
             static getBooks() {
                 let books;
@@ -361,10 +382,8 @@
             }
         }
 
-        // Event: Display Books
         document.addEventListener('DOMContentLoaded', UI.displayBooks);
 
-        // Event: Add/Update a Book
         document.querySelector('#bookForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -380,13 +399,11 @@
             }
 
             if(editId) {
-                // Update existing book
                 const updatedBook = new Book(editId, title, author, isbn, isAvailable);
                 Store.updateBook(updatedBook);
                 document.querySelector('#booksTableBody').innerHTML = '';
                 UI.displayBooks();
             } else {
-                // Add new book
                 const book = new Book(Date.now().toString(), title, author, isbn, isAvailable);
                 UI.addBookToList(book);
                 Store.addBook(book);
@@ -394,8 +411,6 @@
 
             UI.clearFields();
         });
-
-        // Event: Remove a Book
         document.querySelector('#booksTableBody').addEventListener('click', (e) => {
             if(e.target.classList.contains('delete-btn')) {
                 UI.deleteBook(e.target);
@@ -410,6 +425,8 @@
                 }
             }
         });
+        
     </script>
+
 </body>
 </html>
