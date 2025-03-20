@@ -35,22 +35,23 @@
         .library-header {
             background-color: var(--accent-color);
             color: var(--white);
-            padding: 2rem 0;
+            padding: 1rem 0;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .library-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            color: var(--white);
+            font-size: 1.5rem;
+            text-decoration: none;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
@@ -249,14 +250,128 @@
         <section class="book-shelf">
             <h2 class="shelf-title">Featured Books</h2>
             <div class="book-grid">
+                <!-- Fiction -->
                 <div class="book-card">
                     <div class="book-cover">
                         <i class="fas fa-book"></i>
                     </div>
                     <div class="book-info">
-                        <h3>Book Title</h3>
-                        <p><i class="fas fa-user"></i> Author Name</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 123-456-789</p>
+                        <h3>The Midnight Library</h3>
+                        <p><i class="fas fa-user"></i> Matt Haig</p>
+                        <p><i class="fas fa-bookmark"></i> Fiction</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-0525559474</p>
+                        <span class="book-status status-available">Available</span>
+                    </div>
+                </div>
+
+                <!-- Science Fiction -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>Project Hail Mary</h3>
+                        <p><i class="fas fa-user"></i> Andy Weir</p>
+                        <p><i class="fas fa-bookmark"></i> Science Fiction</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-0593135204</p>
+                        <span class="book-status status-borrowed">Borrowed</span>
+                    </div>
+                </div>
+
+                <!-- Mystery -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-magnifying-glass"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>The Silent Patient</h3>
+                        <p><i class="fas fa-user"></i> Alex Michaelides</p>
+                        <p><i class="fas fa-bookmark"></i> Mystery/Thriller</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-1250301697</p>
+                        <span class="book-status status-available">Available</span>
+                    </div>
+                </div>
+
+                <!-- Non-Fiction/Science -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>A Brief History of Time</h3>
+                        <p><i class="fas fa-user"></i> Stephen Hawking</p>
+                        <p><i class="fas fa-bookmark"></i> Science</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-0553380163</p>
+                        <span class="book-status status-available">Available</span>
+                    </div>
+                </div>
+
+                <!-- Fantasy -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-dragon"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>The Name of the Wind</h3>
+                        <p><i class="fas fa-user"></i> Patrick Rothfuss</p>
+                        <p><i class="fas fa-bookmark"></i> Fantasy</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-0756404741</p>
+                        <span class="book-status status-borrowed">Borrowed</span>
+                    </div>
+                </div>
+
+                <!-- Biography -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-user-pen"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>Steve Jobs</h3>
+                        <p><i class="fas fa-user"></i> Walter Isaacson</p>
+                        <p><i class="fas fa-bookmark"></i> Biography</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-1451648539</p>
+                        <span class="book-status status-available">Available</span>
+                    </div>
+                </div>
+
+                <!-- Self-Help -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>Atomic Habits</h3>
+                        <p><i class="fas fa-user"></i> James Clear</p>
+                        <p><i class="fas fa-bookmark"></i> Self-Help</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-0735211292</p>
+                        <span class="book-status status-available">Available</span>
+                    </div>
+                </div>
+
+                <!-- Historical Fiction -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>The Book Thief</h3>
+                        <p><i class="fas fa-user"></i> Markus Zusak</p>
+                        <p><i class="fas fa-bookmark"></i> Historical Fiction</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-0375842207</p>
+                        <span class="book-status status-borrowed">Borrowed</span>
+                    </div>
+                </div>
+
+                <!-- Philosophy -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="book-info">
+                        <h3>Meditations</h3>
+                        <p><i class="fas fa-user"></i> Marcus Aurelius</p>
+                        <p><i class="fas fa-bookmark"></i> Philosophy</p>
+                        <p><i class="fas fa-barcode"></i> ISBN: 978-0812968255</p>
                         <span class="book-status status-available">Available</span>
                     </div>
                 </div>
@@ -282,9 +397,9 @@
             <div class="footer-section">
                 <h4>Contact</h4>
                 <ul>
-                    <li><i class="fas fa-phone"></i> (123) 456-7890</li>
-                    <li><i class="fas fa-envelope"></i> info@library.com</li>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Library Street</li>
+                    <li><i class="fas fa-phone"></i> 999 456-7890</li>
+                    <li><i class="fas fa-envelope"></i> GabitaRelota@library.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 999 Library Street</li>
                 </ul>
             </div>
         </div>
