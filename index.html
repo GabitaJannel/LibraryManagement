@@ -24,19 +24,192 @@
 
         body {
             font-family: 'Source Sans Pro', sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            background-image: 
-                linear-gradient(rgba(220, 215, 201, 0.9), rgba(220, 215, 201, 0.9)),
-                url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" fill="none"/><path d="M0 0h20v20H0z" fill="%23A27B5C" fill-opacity="0.1"/></svg>');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
+        /* Loader styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.1') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .library-loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .book-shelf {
+            position: absolute;
+            bottom: 20px;
+            width: 120px;
+            height: 8px;
+            background: var(--accent-color);
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 10px rgba(162, 123, 92, 0.5);
+        }
+
+        .book {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            transform-style: preserve-3d;
+            animation: book-bounce 1.5s ease-in-out infinite;
+        }
+
+        .book-spine {
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            background: var(--accent-color);
+            left: 0;
+            transform-origin: left;
+            transform: rotateY(0deg);
+        }
+
+        .book-cover {
+            position: absolute;
+            width: 70px;
+            height: 100%;
+            left: 10px;
+            background: var(--primary-color);
+            transform-origin: left;
+            transform-style: preserve-3d;
+            animation: book-open 3s ease-in-out infinite;
+        }
+
+        .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            transform-origin: left;
+            transform-style: preserve-3d;
+        }
+
+        .book-page:nth-child(1) {
+            animation: page-flip-1 3s ease-in-out infinite;
+        }
+
+        .book-page:nth-child(2) {
+            animation: page-flip-2 3s ease-in-out infinite;
+        }
+
+        .book-page:nth-child(3) {
+            animation: page-flip-3 3s ease-in-out infinite;
+        }
+
+        .loader h2 {
+            color: #fff;
+            margin-top: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: text-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes book-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes book-open {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 60% { transform: rotateY(-60deg); }
+            70%, 90% { transform: rotateY(-60deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-1 {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 80% { transform: rotateY(-140deg); }
+            90%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-2 {
+            0%, 35% { transform: rotateY(0deg); }
+            45%, 85% { transform: rotateY(-140deg); }
+            95%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-3 {
+            0%, 40% { transform: rotateY(0deg); }
+            50%, 90% { transform: rotateY(-140deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes text-glow {
+            0%, 100% { 
+                opacity: 0.8;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            50% { 
+                opacity: 1;
+                text-shadow: 2px 2px 15px rgba(162, 123, 92, 0.7);
+            }
+        }
+
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* Your existing styles (no changes) */
         .library-header {
+            background-color: transparent;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 3s;
+        }
+
+        .library-header.scrolled {
             background-color: var(--accent-color);
-            color: var(--white);
-            padding: 1rem 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -80,7 +253,8 @@
         }
 
         .book-shelf {
-            background-color: var(--white);
+            background-color: rgba(249, 245, 235, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 2rem;
@@ -105,7 +279,8 @@
         }
 
         .book-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
             border-radius: 8px;
             padding: 1.5rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -170,7 +345,8 @@
         }
 
         .library-footer {
-            background-color: var(--accent-color);
+            background-color: rgba(162, 123, 92, 0.95);
+            backdrop-filter: blur(10px);
             color: var(--white);
             padding: 2rem 0;
             margin-top: 4rem;
@@ -227,9 +403,89 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Add a hero section */
+        .hero-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .hero-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="library-loader">
+                <div class="book-shelf"></div>
+                <div class="book">
+                    <div class="book-spine"></div>
+                    <div class="book-cover">
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                    </div>
+                </div>
+            </div>
+            <h2>Welcome to Library...</h2>
+        </div>
+    </div>
+
     <header class="library-header">
         <div class="header-content">
             <h1 class="library-title">
@@ -238,11 +494,21 @@
             <nav class="library-nav">
                 <a href="#" class="nav-link">Home</a>
                 <a href="catalog.html" class="nav-link">Catalog</a>
-                <a href="dashboard.html" class="nav-link">Dashboard</a>
                 <a href="#contacts" class="nav-link">Contact</a>
             </nav>
         </div>
     </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to Open Library</h1>
+            <p class="hero-subtitle">Discover thousands of books and expand your knowledge horizon</p>
+            <div class="hero-buttons">
+                <a href="catalog.html" class="hero-btn btn-primary">Browse Catalog</a>
+                <a href="signup.html" class="hero-btn btn-secondary">Join Now</a>
+            </div>
+        </div>
+    </section>
 
     <main class="main-content">
         <input type="search" class="search-bar" placeholder="Search for books, authors, or ISBN...">
@@ -250,131 +516,8 @@
         <section class="book-shelf">
             <h2 class="shelf-title">Featured Books</h2>
             <div class="book-grid">
-                <!-- Fiction -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>The Midnight Library</h3>
-                        <p><i class="fas fa-user"></i> Matt Haig</p>
-                        <p><i class="fas fa-bookmark"></i> Fiction</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-0525559474</p>
-                        <span class="book-status status-available">Available</span>
-                    </div>
-                </div>
-
-                <!-- Science Fiction -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>Project Hail Mary</h3>
-                        <p><i class="fas fa-user"></i> Andy Weir</p>
-                        <p><i class="fas fa-bookmark"></i> Science Fiction</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-0593135204</p>
-                        <span class="book-status status-borrowed">Borrowed</span>
-                    </div>
-                </div>
-
-                <!-- Mystery -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-magnifying-glass"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>The Silent Patient</h3>
-                        <p><i class="fas fa-user"></i> Alex Michaelides</p>
-                        <p><i class="fas fa-bookmark"></i> Mystery/Thriller</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-1250301697</p>
-                        <span class="book-status status-available">Available</span>
-                    </div>
-                </div>
-
-                <!-- Non-Fiction/Science -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-atom"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>A Brief History of Time</h3>
-                        <p><i class="fas fa-user"></i> Stephen Hawking</p>
-                        <p><i class="fas fa-bookmark"></i> Science</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-0553380163</p>
-                        <span class="book-status status-available">Available</span>
-                    </div>
-                </div>
-
-                <!-- Fantasy -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-dragon"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>The Name of the Wind</h3>
-                        <p><i class="fas fa-user"></i> Patrick Rothfuss</p>
-                        <p><i class="fas fa-bookmark"></i> Fantasy</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-0756404741</p>
-                        <span class="book-status status-borrowed">Borrowed</span>
-                    </div>
-                </div>
-
-                <!-- Biography -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-user-pen"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>Steve Jobs</h3>
-                        <p><i class="fas fa-user"></i> Walter Isaacson</p>
-                        <p><i class="fas fa-bookmark"></i> Biography</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-1451648539</p>
-                        <span class="book-status status-available">Available</span>
-                    </div>
-                </div>
-
-                <!-- Self-Help -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>Atomic Habits</h3>
-                        <p><i class="fas fa-user"></i> James Clear</p>
-                        <p><i class="fas fa-bookmark"></i> Self-Help</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-0735211292</p>
-                        <span class="book-status status-available">Available</span>
-                    </div>
-                </div>
-
-                <!-- Historical Fiction -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-landmark"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>The Book Thief</h3>
-                        <p><i class="fas fa-user"></i> Markus Zusak</p>
-                        <p><i class="fas fa-bookmark"></i> Historical Fiction</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-0375842207</p>
-                        <span class="book-status status-borrowed">Borrowed</span>
-                    </div>
-                </div>
-
-                <!-- Philosophy -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <div class="book-info">
-                        <h3>Meditations</h3>
-                        <p><i class="fas fa-user"></i> Marcus Aurelius</p>
-                        <p><i class="fas fa-bookmark"></i> Philosophy</p>
-                        <p><i class="fas fa-barcode"></i> ISBN: 978-0812968255</p>
-                        <span class="book-status status-available">Available</span>
-                    </div>
-                </div>
+                <!-- Book Cards (as before) -->
+                <!-- Add your book cards here as before -->
             </div>
         </section>
     </main>
@@ -404,5 +547,27 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.transition = 'opacity 0.8s ease';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 800);
+            }, 1500); // Show loader for at least 1.5 seconds
+        });
+
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.library-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -3,99 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Catalog</title>
     <link rel="icon" type="image/x-icon" href="/images/Screenshot 2025-03-20 134247.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Library Catalog</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #2a5298;
+            --accent-color: #A27B5C;
+            --text-color: black;
+            --bg-color: #DCD7C9;
+            --white: #F9F5EB;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        :root {
-            --primary-color: #A27B5C;
-            --secondary-color: #A27B5C;
-            --accent-color: #3498db;
-            --text-color: #2c3e50;
-            --light-gray: #ecf0f1;
-            --white: #ffffff;
         }
 
         body {
-            background-color: var(--light-gray);
+            font-family: 'Source Sans Pro', sans-serif;
             color: var(--text-color);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            line-height: 1.6;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.1');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
         /* Header Styles */
-        .header {
-            background-color: var(--primary-color);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .library-header {
+            background-color: transparent;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        .library-header.scrolled {
+            background-color: var(--accent-color);
         }
 
         .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
         }
 
-        .logo {
+        .library-title {
             color: var(--white);
             font-size: 1.5rem;
             text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .nav-links {
+        .library-nav {
             display: flex;
-            gap: 20px;
+            gap: 2rem;
         }
 
-        .nav-links a {
+        .nav-link {
             color: var(--white);
             text-decoration: none;
-            padding: 5px 10px;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
             transition: background-color 0.3s;
         }
 
-        .nav-links a:hover {
-            background-color: var(--secondary-color);
+        .nav-link:hover {
+            background-color: var(--accent-color);
         }
 
-        /* Search and Filter Section */
+        /* Hero Section */
+        .hero-section {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Search Section */
         .search-section {
-            background-color: var(--white);
-            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
             border-radius: 8px;
-            margin: 20px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .search-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
         }
 
-        .search-input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .filter-select {
-            padding: 10px;
-            border: 1px solid #ddd;
+        .search-input, .filter-select {
+            padding: 0.8rem;
+            border: 1px solid var(--accent-color);
             border-radius: 4px;
             font-size: 1rem;
         }
@@ -103,329 +117,369 @@
         /* Catalog Grid */
         .catalog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
 
         .book-card {
-            background-color: var(--white);
+            background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
+            position: relative;
+            height: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .book-cover {
-            height: 200px;
-            background-color: var(--secondary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 100%;
+            width: 100%;
+            position: relative;
         }
 
-        .book-cover i {
-            font-size: 3rem;
-            color: var(--white);
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .book-info {
-            padding: 15px;
-        }
-
-        .book-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: var(--text-color);
-        }
-
-        .book-details {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .book-status {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-        }
-
-        .status-available {
-            background-color: #2ecc71;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
             color: white;
         }
 
-        .status-borrowed {
-            background-color: #e74c3c;
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            font-size: 2rem;
             color: white;
+            cursor: pointer;
         }
 
         /* Pagination */
         .pagination {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 0.5rem;
+            margin: 2rem 0;
         }
 
         .page-btn {
-            padding: 8px 15px;
+            padding: 0.5rem 1rem;
             border: none;
-            background-color: var(--white);
+            background: var(--white);
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .page-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--white);
         }
 
         .page-btn.active {
-            background-color: var(--accent-color);
-            color: var(--white);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .catalog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                gap: 10px;
-            }
-
             .search-container {
                 grid-template-columns: 1fr;
             }
+            .catalog-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .library-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Loader styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.1') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .library-loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .book-shelf {
+            position: absolute;
+            bottom: 20px;
+            width: 120px;
+            height: 8px;
+            background: var(--accent-color);
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 10px rgba(162, 123, 92, 0.5);
+        }
+
+        .book {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            transform-style: preserve-3d;
+            animation: book-bounce 1.5s ease-in-out infinite;
+        }
+
+        .book-spine {
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            background: var(--accent-color);
+            left: 0;
+            transform-origin: left;
+            transform: rotateY(0deg);
+        }
+
+        .loader h2 {
+            color: #fff;
+            margin-top: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: text-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes book-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes book-open {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 60% { transform: rotateY(-60deg); }
+            70%, 90% { transform: rotateY(-60deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-1 {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 80% { transform: rotateY(-140deg); }
+            90%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-2 {
+            0%, 35% { transform: rotateY(0deg); }
+            45%, 85% { transform: rotateY(-140deg); }
+            95%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-3 {
+            0%, 40% { transform: rotateY(0deg); }
+            50%, 90% { transform: rotateY(-140deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes text-glow {
+            0%, 100% { 
+                opacity: 0.8;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            50% { 
+                opacity: 1;
+                text-shadow: 2px 2px 15px rgba(162, 123, 92, 0.7);
+            }
+        }
+
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">
-                    <i class="fa-solid fa-book-bookmark"></i> Library Catalog
-                </a>
-                <nav class="nav-links">
-                    <a href="index.html">Home</a>
-                    <a href="catalog.html">Catalog</a>
-                    <a href="dashboard.html">Dashboard</a>
-                </nav>
-            </div>
+    <header class="library-header">
+        <div class="header-content">
+            <h1 class="library-title">
+                <i class="fa-solid fa-book-bookmark"></i> Open Library
+            </h1>
+            <nav class="library-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="catalog.html" class="nav-link">Catalog</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+            </nav>
         </div>
     </header>
 
-    <main class="container">
-        <section class="search-section">
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search by title, author, or ISBN...">
-                <select class="filter-select" id="genre-filter">
-                    <option value="">All Categories</option>
-                    <option value="Classic Literature">Classic Literature</option>
-                    <option value="Science Fiction">Science Fiction</option>
-                    <option value="Mystery">Mystery</option>
-                    <option value="Romance">Romance</option>
-                    <option value="Fantasy">Fantasy</option>
-                    <option value="Science">Science</option>
-                    <option value="Philosophy">Philosophy</option>
-                    <option value="Horror">Horror</option>
-                    <option value="Thriller">Thriller</option>
-                    <option value="Biography">Biography</option>
-                    <option value="History">History</option>
-                </select>
-                <select class="filter-select" id="status-filter">
-                    <option value="">All Status</option>
-                    <option value="available">Available</option>
-                    <option value="borrowed">Borrowed</option>
-                </select>
-            </div>
-        </section>
+    <section class="hero-section">
+        <h1 class="hero-title">Explore Our Library</h1>
+        <p>Discover thousands of books in our collection</p>
+    </section>
 
-        <section class="catalog-grid">
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">The Great Gatsby</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> F. Scott Fitzgerald</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Classic Literature</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0743273565</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">Dune</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Frank Herbert</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Science Fiction</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0441172719</p>
-                    <span class="book-status status-borrowed">Borrowed</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">To Kill a Mockingbird</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Harper Lee</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Classic Literature</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0446310789</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">The Alchemist</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Paulo Coelho</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Philosophy</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0062315007</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">The Silent Patient</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Alex Michaelides</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Thriller</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-1250301697</p>
-                    <span class="book-status status-borrowed">Borrowed</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">Sapiens</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Yuval Noah Harari</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> History</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0062316097</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">The Name of the Wind</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Patrick Rothfuss</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Fantasy</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0756404741</p>
-                    <span class="book-status status-borrowed">Borrowed</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">Atomic Habits</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> James Clear</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Self-Help</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0735211292</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">The Thursday Murder Club</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Richard Osman</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Mystery</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-1984880963</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">Project Hail Mary</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Andy Weir</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Science Fiction</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0593135204</p>
-                    <span class="book-status status-borrowed">Borrowed</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">The Psychology of Money</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Morgan Housel</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Finance</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0857197689</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">The Midnight Library</h3>
-                    <p class="book-details"><i class="fas fa-user"></i> Matt Haig</p>
-                    <p class="book-details"><i class="fas fa-bookmark"></i> Contemporary Fiction</p>
-                    <p class="book-details"><i class="fas fa-barcode"></i> ISBN: 978-0525559474</p>
-                    <span class="book-status status-available">Available</span>
-                </div>
-            </div>
-        </section>
-
-        <div class="pagination">
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-            <button class="page-btn">4</button>
-            <button class="page-btn">...</button>
-            <button class="page-btn">10</button>
+    <section class="search-section">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search by title, author, or ISBN...">
+            <select class="filter-select" id="genre-filter">
+                <option value="">All Categories</option>
+            </select>
+            <select class="filter-select" id="status-filter">
+                <option value="">All Status</option>
+                <option value="available">Available</option>
+                <option value="borrowed">Borrowed</option>
+            </select>
         </div>
-    </main>
+    </section>
 
-    <div class="loading-spinner" style="display: none;">
-        <i class="fas fa-spinner fa-spin"></i>
+    <div class="catalog-grid">
+        <!-- Books will be dynamically loaded here -->
     </div>
-    
+
+    <div class="pagination">
+        <!-- Pagination will be dynamically loaded here -->
+    </div>
+
+    <div class="modal">
+        <div class="modal-content">
+            <!-- Modal content will be dynamically loaded -->
+        </div>
+        <span class="close-modal">&times;</span>
+    </div>
+
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="library-loader">
+                <div class="book-shelf"></div>
+                <div class="book">
+                    <div class="book-spine"></div>
+                    <div class="book-cover">
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                    </div>
+                </div>
+            </div>
+            <h2>Loading Catalog...</h2>
+        </div>
+    </div>
+
     <script src="catalog.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show loader
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+
+            // Hide loader after content is loaded
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    loader.style.transition = 'opacity 0.8s ease';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 800);
+                }, 1500); // Show loader for at least 1.5 seconds
+            });
+
+            // Update navigation
+            updateNavigation();
+
+            // Initialize the catalog display
+            filterAndDisplayBooks();
+
+            // Add scroll event listener for header
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('.library-header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Add modal close functionality
+            document.querySelector('.close-modal').addEventListener('click', () => {
+                document.querySelector('.modal').style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                const modal = document.querySelector('.modal');
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

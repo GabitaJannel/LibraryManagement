@@ -6,9 +6,16 @@
     <title>Library Management System</title>
     <link rel="icon" type="image/x-icon" href="/images/Screenshot 2025-03-20 134247.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #2a5298;
+            --accent-color: #A27B5C;
+            --text-color: black;
+            --bg-color: #DCD7C9;
+            --white: #F9F5EB;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -17,19 +24,25 @@
         }
 
         body {
-            background-color: #f0f2f5;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.1') no-repeat center center fixed;
+            background-size: cover;
             color: #333;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            padding-top: 100px;
         }
 
         .header {
-            background: #A27B5C;
-            color: white;
+            margin-top: 40px;
+            background: rgba(162, 123, 92, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--white);
             padding: 2rem;
             border-radius: 10px;
             margin-bottom: 2rem;
@@ -46,7 +59,9 @@
         }
 
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             padding: 2rem;
             margin-bottom: 2rem;
@@ -91,6 +106,13 @@
             gap: 0.5rem;
         }
 
+        .filter-section {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
         .btn {
             padding: 0.8rem 1.5rem;
             border: none;
@@ -101,8 +123,8 @@
         }
 
         .btn-primary {
-            background: #2a5298;
-            color: white;
+            background: var(--primary-color);
+            color: var(--white);
         }
 
         .btn-primary:hover {
@@ -148,12 +170,12 @@
 
         .status-available {
             background: #139c1f;
-            color: black;
+            color: white;
         }
 
         .status-unavailable {
             background: #ce1d1d;
-            color: #ffffff;
+            color: white;
         }
 
         .action-buttons {
@@ -175,14 +197,25 @@
             border-radius: 5px;
         }
 
-        .btn-edit:hover, .btn-delete:hover {
+        .btn-info {
+            background: #0dcaf0;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .btn-edit:hover, .btn-delete:hover, .btn-info:hover {
             opacity: 0.9;
             transform: translateY(-1px);
         }
 
         @media (max-width: 768px) {
+            .container {
+                padding-top: 140px;
+            }
+            
             .header {
-                padding: 1.5rem;
+                margin-top: 20px;
             }
 
             .header h1 {
@@ -195,6 +228,30 @@
 
             td, th {
                 padding: 0.75rem;
+            }
+
+            .library-header {
+                padding: 0.8rem 0;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .library-nav {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .library-title {
+                font-size: 1.8rem;
             }
         }
 
@@ -216,13 +273,457 @@
             color:#2c3e50;
             font-weight: 900;
         }
-    
-       
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid #28a745;
+        }
+
+        .notification.error {
+            border-left: 4px solid #dc3545;
+        }
+
+        .stats-section {
+            margin: 2rem 0;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .confirm-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .confirm-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .confirm-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .text-muted {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        .library-header {
+            background-color: transparent;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            animation: fadeInDown 0.5s ease-out;
+        }
+
+        .library-header.scrolled {
+            background-color: rgba(42, 82, 152, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .library-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--white);
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .library-title i {
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .library-title:hover i {
+            transform: rotate(15deg);
+        }
+
+        .library-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            transform: translateY(3px);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            transform: translateY(0);
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background-color: rgba(162, 123, 92, 0.2);
+            color: var(--accent-color);
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover i {
+            transform: translateY(-2px);
+        }
+
+        #logoutBtn {
+            background-color: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        #logoutBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #dc3545;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        #logoutBtn:hover {
+            border-color: #dc3545;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        #logoutBtn:hover::before {
+            width: 100%;
+        }
+
+        #logoutBtn i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        #logoutBtn:hover i {
+            transform: translateX(3px);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced Loader styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.1') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .library-loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .book-shelf {
+            position: absolute;
+            bottom: 20px;
+            width: 120px;
+            height: 8px;
+            background: var(--accent-color);
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 10px rgba(162, 123, 92, 0.5);
+        }
+
+        .book {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            transform-style: preserve-3d;
+            animation: book-bounce 1.5s ease-in-out infinite;
+        }
+
+        .book-spine {
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            background: var(--accent-color);
+            left: 0;
+            transform-origin: left;
+            transform: rotateY(0deg);
+        }
+
+        .book-cover {
+            position: absolute;
+            width: 70px;
+            height: 100%;
+            left: 10px;
+            background: var(--primary-color);
+            transform-origin: left;
+            transform-style: preserve-3d;
+            animation: book-open 3s ease-in-out infinite;
+        }
+
+        .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            transform-origin: left;
+            transform-style: preserve-3d;
+        }
+
+        .book-page:nth-child(1) {
+            animation: page-flip-1 3s ease-in-out infinite;
+        }
+
+        .book-page:nth-child(2) {
+            animation: page-flip-2 3s ease-in-out infinite;
+        }
+
+        .book-page:nth-child(3) {
+            animation: page-flip-3 3s ease-in-out infinite;
+        }
+
+        .loader h2 {
+            color: #fff;
+            margin-top: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: text-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes book-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes book-open {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 60% { transform: rotateY(-60deg); }
+            70%, 90% { transform: rotateY(-60deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-1 {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 80% { transform: rotateY(-140deg); }
+            90%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-2 {
+            0%, 35% { transform: rotateY(0deg); }
+            45%, 85% { transform: rotateY(-140deg); }
+            95%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-3 {
+            0%, 40% { transform: rotateY(0deg); }
+            50%, 90% { transform: rotateY(-140deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes text-glow {
+            0%, 100% { 
+                opacity: 0.8;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            50% { 
+                opacity: 1;
+                text-shadow: 2px 2px 15px rgba(162, 123, 92, 0.7);
+            }
+        }
+
+        /* Add shine effect to book */
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
     </style>
 </head>
 <body>
+    <header class="library-header">
+        <div class="header-content">
+            <a href="index.html" class="library-title">
+                <i class="fa-solid fa-book-bookmark"></i>
+                <span>Open Library</span>
+            </a>
+            <nav class="library-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="catalog.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Catalog</span>
+                </a>
+                <a href="dashboard.html" class="nav-link active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="index.html" class="nav-link" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
     <div class="container">
-        <input type="button" value="Back to Home" onclick="window.location.href='index.html'" class="back-btn">
         <div class="header">
             <h1><i class="fa-solid fa-book-bookmark"></i> Library Management System</h1>
             <p>Manage your library collection efficiently</p>
@@ -258,6 +759,13 @@
         </div>
 
         <div class="card">
+            <div class="filter-section">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="filterAvailable">
+                    <label for="filterAvailable"><i class="fas fa-filter"></i> Show only available books</label>
+                </div>
+            </div>
+            
             <div class="table-container">
                 <table id="booksTable">
                     <thead>
@@ -275,8 +783,24 @@
         </div>
     </div>
 
-    <script>
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="library-loader">
+                <div class="book-shelf"></div>
+                <div class="book">
+                    <div class="book-spine"></div>
+                    <div class="book-cover">
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                    </div>
+                </div>
+            </div>
+            <h2>Loading Library...</h2>
+        </div>
+    </div>
 
+    <script>
         class Book {
             constructor(id, title, author, isbn, isAvailable, genre = '', publishDate = '', description = '') {
                 this.id = id;
@@ -297,8 +821,27 @@
                 const books = Store.getBooks();
                 const tableBody = document.querySelector('#booksTableBody');
                 tableBody.innerHTML = '';
-                books.forEach(book => UI.addBookToList(book));
+                
+                const filterAvailable = document.getElementById('filterAvailable').checked;
+                
+                const filteredBooks = filterAvailable 
+                    ? books.filter(book => book.isAvailable) 
+                    : books;
+                filteredBooks.forEach(book => UI.addBookToList(book));
                 this.updateStats();
+                
+                if (filteredBooks.length === 0 && books.length > 0 && filterAvailable) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td colspan="5" style="text-align: center; padding: 20px;">
+                            <i class="fas fa-info-circle"></i> No available books found. 
+                            <a href="#" onclick="document.getElementById('filterAvailable').checked=false; UI.displayBooks(); return false;">
+                                Show all books
+                            </a>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                }
             }
 
             static addBookToList(book) {
@@ -431,7 +974,7 @@
                 const statsHtml = `
                     <div class="stats-container">
                         <div class="stat-card">
-                            <i class="fas fa-books"></i>
+                            <i class="fas fa-book"></i>
                             <h3>Total Books</h3>
                             <p>${stats.total}</p>
                         </div>
@@ -476,6 +1019,49 @@
                     document.querySelector('#title').focus();
                 }
             }
+
+            static showBookDetails(id) {
+                const book = Store.getBookById(id);
+                if (book) {
+                    const modal = document.createElement('div');
+                    modal.className = 'confirm-dialog';
+                    
+                    const addedDate = new Date(book.dateAdded).toLocaleDateString();
+                    
+                    modal.innerHTML = `
+                        <div class="confirm-content" style="padding: 25px; min-width: 350px; text-align: left;">
+                            <h3 style="margin-bottom: 15px; color: #2a5298;">Book Details</h3>
+                            <div style="margin-bottom: 20px;">
+                                <p><strong><i class="fas fa-book"></i> Title:</strong> ${book.title}</p>
+                                <p><strong><i class="fas fa-user-edit"></i> Author:</strong> ${book.author}</p>
+                                <p><strong><i class="fas fa-barcode"></i> ISBN:</strong> ${book.isbn}</p>
+                                <p><strong><i class="fas fa-info-circle"></i> Status:</strong> 
+                                    <span class="status ${book.isAvailable ? 'status-available' : 'status-unavailable'}" style="display: inline-block; margin-left: 5px;">
+                                        ${book.isAvailable ? 'Available' : 'Not Available'}
+                                    </span>
+                                </p>
+                                <p><strong><i class="fas fa-calendar-alt"></i> Added on:</strong> ${addedDate}</p>
+                            </div>
+                            <div class="confirm-buttons">
+                                <button class="btn btn-primary">Close</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    
+                    const closeBtn = modal.querySelector('.btn-primary');
+                    closeBtn.addEventListener('click', () => {
+                        modal.remove();
+                    });
+                    
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.remove();
+                        }
+                    });
+                }
+            }
         }
 
         class Store {
@@ -508,99 +1094,20 @@
             }
         }
 
-        // Add necessary styles
-        const styles = `
-            .notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 25px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                transform: translateX(120%);
-                transition: transform 0.3s ease;
-                z-index: 1000;
-            }
-
-            .notification.show {
-                transform: translateX(0);
-            }
-
-            .stats-section {
-                margin: 2rem 0;
-            }
-
-            .stats-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 20px;
-            }
-
-            .stat-card {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                text-align: center;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            .stat-card i {
-                font-size: 2rem;
-                color: #A27B5C;
-                margin-bottom: 10px;
-            }
-
-            .confirm-dialog {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            }
-
-            .confirm-content {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                text-align: center;
-            }
-
-            .confirm-buttons {
-                margin-top: 20px;
-                display: flex;
-                justify-content: center;
-                gap: 10px;
-            }
-
-            .text-muted {
-                color: #6c757d;
-                font-size: 0.875rem;
-            }
-
-            tr {
-                transition: all 0.3s ease;
-            }
-        `;
-
-        // Add styles to document
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = styles;
-        document.head.appendChild(styleSheet);
-
-        // Initialize the application
         document.addEventListener('DOMContentLoaded', () => {
+            if (!document.getElementById('filterAvailable')) {
+                const filterAvailable = document.createElement('input');
+                filterAvailable.type = 'checkbox';
+                filterAvailable.id = 'filterAvailable';
+                filterAvailable.checked = false;
+            }
+            
+            document.getElementById('filterAvailable').addEventListener('change', () => {
+                UI.displayBooks();
+            });
+            
             UI.displayBooks();
 
-            // Form submission handler
         document.querySelector('#bookForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -616,9 +1123,15 @@
             }
 
                 if (editId) {
-                const updatedBook = new Book(editId, title, author, isbn, isAvailable);
-                Store.updateBook(updatedBook);
-                    UI.showNotification('Book updated successfully');
+                    const book = Store.getBookById(editId);
+                    if (book) {
+                        book.title = title;
+                        book.author = author;
+                        book.isbn = isbn;
+                        book.isAvailable = isAvailable;
+                        Store.updateBook(book);
+                        UI.showNotification('Book updated successfully');
+                    }
             } else {
                     const newBook = new Book(Date.now().toString(), title, author, isbn, isAvailable);
                     Store.addBook(newBook);
@@ -628,8 +1141,22 @@
             UI.clearFields();
                 UI.displayBooks();
             });
+
+            // Show loader
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+
+            // Hide loader after content is loaded
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    loader.style.transition = 'opacity 0.8s ease';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 800);
+                }, 1500); // Show loader for at least 1.5 seconds
+            });
         });
     </script>
-
 </body>
 </html>

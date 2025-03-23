@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Open Library</title>
+    <link rel="icon" type="image/x-icon" href="/images/Screenshot 2025-03-20 134247.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Update color theme to match signup.html */
+            --primary-color: #A27B5C;
+            --accent-color: #A27B5C;
+            --text-color: black;
+            --bg-color: #DCD7C9;
+            --white: #F9F5EB;
+            --hover-color: #B88B6A;
+            /* Keep additional colors needed for login page */
+            --error-color: #fa5252;
+            --success-color: #139c1f;
+            --secondary-bg: #f8f9fa;
+            --border-color: #ddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: var(--bg-color);
+            position: relative;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(245, 246, 250, 0.97), rgba(245, 246, 250, 0.97)),
+                url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" fill="none"/><path d="M0 0h20v20H0z" fill="%231B3C73" fill-opacity="0.05"/></svg>');
+        }
+
+        .page-wrapper {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Match dashboard's card shadow */
+            border: 1px solid var(--border-color);
+        }
+
+        .login-sidebar {
+            flex: 1;
+            background: var(--accent-color);  /* Match dashboard's header background */
+            padding: 3rem;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,...') center/cover;
+            opacity: 0.1;
+        }
+
+        .sidebar-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-text {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .features-list i {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);  /* Lighter background for better contrast */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        .login-main {
+            flex: 1;
+            padding: 3rem;
+            background: var(--white);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .login-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .login-header h2 {
+            color: var(--text-color);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #8896AB;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            color: #555;  /* Match dashboard's form label color */
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            position: relative;
+            background: var(--white);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.2);  /* Match dashboard's input focus */
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .form-control::placeholder {
+            color: #8896AB;
+        }
+
+        .input-group i {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary-color);
+            color: var(--white);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: var(--hover-color);
+            transform: translateY(-2px);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::after {
+            transform: translateX(0);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+        }
+
+        .remember-me span {
+            color: var(--text-color);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 2rem 0;
+            color: #666;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .social-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--white);
+            color: var(--text-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            background: var(--secondary-bg);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+        }
+
+        .forgot-password:hover {
+            color: var(--accent-color);
+        }
+
+        .signup-link {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .signup-link:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                margin: 1rem;
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+
+            .login-sidebar {
+                padding: 2rem;
+                border-radius: 12px 12px 0 0;
+            }
+
+            .login-main {
+                padding: 2rem;
+                border-radius: 0 0 12px 12px;
+            }
+
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loader styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.1') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .library-loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .book-shelf {
+            position: absolute;
+            bottom: 20px;
+            width: 120px;
+            height: 8px;
+            background: var(--accent-color);
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 10px rgba(162, 123, 92, 0.5);
+        }
+
+        .book {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            transform-style: preserve-3d;
+            animation: book-bounce 1.5s ease-in-out infinite;
+        }
+
+        .book-spine {
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            background: var(--accent-color);
+            left: 0;
+            transform-origin: left;
+            transform: rotateY(0deg);
+        }
+
+        .book-cover {
+            position: absolute;
+            width: 70px;
+            height: 100%;
+            left: 10px;
+            background: var(--primary-color);
+            transform-origin: left;
+            transform-style: preserve-3d;
+            animation: book-open 3s ease-in-out infinite;
+        }
+
+        .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            transform-origin: left;
+            transform-style: preserve-3d;
+        }
+
+        .book-page:nth-child(1) {
+            animation: page-flip-1 3s ease-in-out infinite;
+        }
+
+        .book-page:nth-child(2) {
+            animation: page-flip-2 3s ease-in-out infinite;
+        }
+
+        .book-page:nth-child(3) {
+            animation: page-flip-3 3s ease-in-out infinite;
+        }
+
+        .loader h2 {
+            color: #fff;
+            margin-top: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: text-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes book-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes book-open {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 60% { transform: rotateY(-60deg); }
+            70%, 90% { transform: rotateY(-60deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-1 {
+            0%, 30% { transform: rotateY(0deg); }
+            40%, 80% { transform: rotateY(-140deg); }
+            90%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-2 {
+            0%, 35% { transform: rotateY(0deg); }
+            45%, 85% { transform: rotateY(-140deg); }
+            95%, 100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes page-flip-3 {
+            0%, 40% { transform: rotateY(0deg); }
+            50%, 90% { transform: rotateY(-140deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes text-glow {
+            0%, 100% { 
+                opacity: 0.8;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            50% { 
+                opacity: 1;
+                text-shadow: 2px 2px 15px rgba(162, 123, 92, 0.7);
+            }
+        }
+
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="login-container">
+            <div class="login-sidebar">
+                <div class="sidebar-content">
+                    <div class="welcome-text">
+                        <h2>Welcome Back</h2>
+                        <p>Access your library account and explore our vast collection of resources</p>
+                    </div>
+                    <ul class="features-list">
+                        <li>
+                            <i class="fas fa-book-reader"></i>
+                            <span>Access digital library resources</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-history"></i>
+                            <span>View borrowing history</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-bookmark"></i>
+                            <span>Manage your reading lists</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-bell"></i>
+                            <span>Get notifications and updates</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="login-main">
+                <div class="login-header">
+                    <div class="login-logo">
+                        <i class="fas fa-book-bookmark"></i>
+                    </div>
+                    <h2>Sign In</h2>
+                    <p>Please enter your credentials</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+
+                    <div class="divider">
+                        <span>Or continue with</span>
+                    </div>
+
+                    <div class="social-buttons">
+                        <button type="button" class="social-btn">
+                            <i class="fas fa-university"></i> Institution
+                        </button>
+                        <button type="button" class="social-btn">
+                            <i class="fas fa-id-card"></i> Library Card
+                        </button>
+                    </div>
+
+                    <div class="login-footer">
+                        <p>Don't have an account? <a href="signup.html" class="signup-link">Create Account</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="library-loader">
+                <div class="book-shelf"></div>
+                <div class="book">
+                    <div class="book-spine"></div>
+                    <div class="book-cover">
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                    </div>
+                </div>
+            </div>
+            <h2>Preparing Library...</h2>
+        </div>
+    </div>
+
+    <script>
+        // Show loader when page starts loading
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+
+            // Hide loader after content is loaded
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    loader.style.transition = 'opacity 0.8s ease';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 800);
+                }, 1500); // Show loader for at least 1.5 seconds
+            });
+        });
+
+        // Enhanced form validation and submission
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Basic validation
+            if (!emailInput.value || !passwordInput.value) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            if (!isValidEmail(emailInput.value)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+                submitBtn.disabled = true;
+
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Add your actual login logic here
+                console.log('Login successful');
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                showError('Login failed. Please try again.');
+            } finally {
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                submitBtn.disabled = false;
+            }
+        });
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function showError(message) {
+            // Add your error display logic here
+            alert(message);
+        }
+    </script>
+</body>
+</html>
